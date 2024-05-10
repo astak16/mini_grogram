@@ -1,7 +1,7 @@
 import "./miniAppList.less";
 import tpl from "./miniAppList.html";
 import { uuid, closest } from "@/utils/util";
-// import { AppManager } from "@/core/appManager/appManager";
+import { AppManager } from "@/core/appManager/appManager";
 
 const appList = [
   {
@@ -69,14 +69,14 @@ export class MiniAppList {
       const appId = app.getAttribute("data-appid");
       const appInfo = this.getAppInfoByAppId(appId);
       if (!appInfo) return;
-      // AppManager.openApp(
-      //   {
-      //     appId,
-      //     path: appInfo.path,
-      //     scene: 1001,
-      //   },
-      //   this.parent
-      // );
+      AppManager.openApp(
+        {
+          appId,
+          path: appInfo.path,
+          scene: 1001,
+        },
+        this.parent
+      );
     };
   }
   onPresentOut() {
