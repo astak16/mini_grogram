@@ -10,10 +10,10 @@ export class AppManager {
     const { pagePath, query } = queryPath(path);
     const { appName, logo } = await getMiniAppInfo(appId);
     const cacheApp = this.getAppById(appId);
-    if (cacheApp) {
-      wx.presentView(cacheApp, true);
-      return;
-    }
+    // if (cacheApp) {
+    //   wx.presentView(cacheApp, true);
+    //   return;
+    // }
     const miniApp = new MiniAppSandbox({
       appId,
       scene,

@@ -2,13 +2,12 @@ import "./style.less";
 import tpl from "./tpl.html";
 import { uuid, sleep, queryPath } from "@/utils/util";
 import { AppManager } from "@/core/appManager/appManager";
-// import { Bridge } from "@/core/bridge/bridge";
+import { Bridge } from "@/core/bridge/bridge";
 // import { JSCore } from "@/core/jscore/jscore";
 import { readFile, mergePageConfig } from "./util";
 
 export class MiniAppSandbox {
   constructor(opts) {
-    // super();
     this.appInfo = opts;
     this.parent = null;
     this.appId = opts.appId;
@@ -19,6 +18,7 @@ export class MiniAppSandbox {
     this.webviewsContainer = null;
     this.el = document.createElement("div");
     this.el.classList.add("wx-native-view");
+    console.log(this.bridgeList, "bridgeList");
     // this.jscore.addEventListener("message", this.jscoreMessageHandler.bind(this));
   }
   viewDidLoad() {
@@ -34,25 +34,27 @@ export class MiniAppSandbox {
     // 1. 拉取小程序资源
     await sleep(1000);
     // 2. 读取配置文件
-    // const configPath = `${this.appInfo.appId}/config.json`;
-    // const configContent = await readFile(configPath);
-    // this.appConfig = JSON.parse(configContent);
+    const configPath = `${this.appId}/config.json`;
+    const configContent = await readFile(configPath);
+    this.appConfig = JSON.parse(configContent);
 
     // 3. 设置状态栏颜色模式
-    // const entryPagePath = this.appInfo.pagePath || this.appConfig.app.entryPagePath;
-    // this.updateTargetPageColorStyle(entryPagePath);
+    const entryPagePath = this.appInfo.pagePath || this.appConfig.app.entryPagePath;
+    this.updateTargetPageColorStyle(entryPagePath);
+
     // 4. 创建通信桥 bridge
     // const pageConfig = this.appConfig.modules[entryPagePath];
-    // const entryPageBridge = await this.createBridge({
-    //   pagePath: entryPagePath,
-    //   query: this.appInfo.query,
-    //   scene: this.appInfo.scene,
-    //   jscore: this.jscore,
-    //   isRoot: true,
-    //   appId: this.appInfo.appId,
-    //   configInfo: mergePageConfig(this.appConfig.app, pageConfig),
-    // });
-    // this.bridgeList.push(entryPageBridge);
+    const entryPageBridge = await this.createBridge({
+      // pagePath: entryPagePath,
+      // query: this.appInfo.query,
+      // scene: this.appInfo.scene,
+      // jscore: this.jscore,
+      // isRoot: true,
+      // appId: this.appInfo.appId,
+      // configInfo: mergePageConfig(this.appConfig.app, pageConfig),
+    });
+    this.bridgeList.push(entryPageBridge);
+
     // console.log(this.bridgeList);
     // entryPageBridge.start();
 
@@ -96,12 +98,12 @@ export class MiniAppSandbox {
     const startPage = this.el.querySelector(".wx-mini-app__launch-screen");
     startPage.style.display = "none";
   }
-  // updateTargetPageColorStyle(pagePath) {
-  //   const pageConfig = this.appConfig.modules[pagePath];
-  //   const mergeConfig = mergePageConfig(this.appConfig.app, pageConfig);
-  //   const { navigationBarTextStyle } = mergeConfig;
-  //   this.updateActionColorStyle(navigationBarTextStyle);
-  // }
+  updateTargetPageColorStyle(pagePath) {
+    const pageConfig = this.appConfig.modules[pagePath];
+    const mergeConfig = mergePageConfig(this.appConfig.app, pageConfig);
+    const { navigationBarTextStyle } = mergeConfig;
+    this.updateActionColorStyle(navigationBarTextStyle);
+  }
   updateActionColorStyle(color) {
     const action = this.el.querySelector(".wx-mini-app-navigation__actions");
     if (color === "white") {
