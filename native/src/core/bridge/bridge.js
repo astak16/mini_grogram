@@ -9,7 +9,7 @@ export class Bridge {
     this.jscore = opts.jscore;
     this.parent = null;
     this.status = 0;
-    // this.jscore.addEventListener("message", this.jscoreMessageHandler.bind(this));
+    this.jscore.addEventListener("message", this.jscoreMessageHandler.bind(this));
   }
 
   jscoreMessageHandler(msg) {

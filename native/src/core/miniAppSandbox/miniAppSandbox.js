@@ -3,7 +3,7 @@ import tpl from "./tpl.html";
 import { uuid, sleep, queryPath } from "@/utils/util";
 import { AppManager } from "@/core/appManager/appManager";
 import { Bridge } from "@/core/bridge/bridge";
-// import { JSCore } from "@/core/jscore/jscore";
+import { JSCore } from "@/core/jscore/jscore";
 import { readFile, mergePageConfig } from "./util";
 
 export class MiniAppSandbox {
@@ -13,8 +13,8 @@ export class MiniAppSandbox {
     this.appId = opts.appId;
     this.appConfig = null;
     this.bridgeList = [];
-    // this.jscore = new JSCore();
-    // this.jscore.parent = this;
+    this.jscore = new JSCore();
+    this.jscore.parent = this;
     this.webviewsContainer = null;
     this.el = document.createElement("div");
     this.el.classList.add("wx-native-view");
@@ -29,7 +29,7 @@ export class MiniAppSandbox {
     this.initApp();
   }
   async initApp() {
-    // await this.jscore.init();
+    await this.jscore.init();
 
     // 1. 拉取小程序资源
     await sleep(1000);
@@ -48,7 +48,7 @@ export class MiniAppSandbox {
       // pagePath: entryPagePath,
       // query: this.appInfo.query,
       // scene: this.appInfo.scene,
-      // jscore: this.jscore,
+      jscore: this.jscore,
       // isRoot: true,
       // appId: this.appInfo.appId,
       // configInfo: mergePageConfig(this.appConfig.app, pageConfig),
