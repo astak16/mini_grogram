@@ -17,7 +17,7 @@ class Loader {
     //   modRequire(pagePath);
     // });
     message.send({
-      type: "logicResuorceLoaded",
+      type: "logicResourceLoaded",
       body: {
         bridgeId,
       },

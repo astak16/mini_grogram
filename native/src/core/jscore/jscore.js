@@ -12,7 +12,6 @@ export class JSCore {
     const urlObj = window.URL.createObjectURL(jsBlob);
     this.worker = new Worker(urlObj);
     this.worker.addEventListener("message", (e) => {
-      console.log("web worker message");
       const msg = e.data;
       this.event.emit("message", msg);
     });

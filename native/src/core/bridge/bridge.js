@@ -1,5 +1,5 @@
 import { uuid } from "@/utils/util";
-// import { WebView } from "@/core/webview/webview";
+import { WebView } from "@/core/webview/webview";
 
 export class Bridge {
   constructor(opts) {
@@ -9,7 +9,12 @@ export class Bridge {
     this.jscore = opts.jscore;
     this.parent = null;
     this.status = 0;
+  }
+
+  async init() {
     this.jscore.addEventListener("message", this.jscoreMessageHandler.bind(this));
+    this.webview = await this.createWebview();
+    this.webview.addEventListener("message", this.uiMessageHandler.bind(this));
   }
 
   jscoreMessageHandler(msg) {
@@ -18,7 +23,7 @@ export class Bridge {
       return;
     }
     switch (type) {
-      case "logicResuorceLoaded":
+      case "logicResourceLoaded":
         this.status++;
         this.createApp();
         break;
@@ -82,11 +87,6 @@ export class Bridge {
     this.webview.postMessage({ type: "loadResource", body: { appId: this.opts.appId } });
 
     this.jscore.postMessage({ type: "loadResource", body: { appId: this.opts.appId, bridgeId: this.id } });
-  }
-
-  async init() {
-    // this.webview = await this.createWebview();
-    // this.webview.addEventListener("message", this.uiMessageHandler.bind(this));
   }
 
   appShow() {

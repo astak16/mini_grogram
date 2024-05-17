@@ -3,5 +3,3 @@ import messageManager from "@/messageManager";
 
 // globalApi.init();
 messageManager.init();
-
-console.log(222);

@@ -5,11 +5,9 @@ import runtimeManager from "@/runtimeManager";
 class MessageManager {
   constructor() {
     this.message = message;
-    console.log(222222);
   }
 
   init() {
-    console.log(333333);
     this.message.receive("loadResource", (msg) => {
       const { appId, bridgeId } = msg;
       loader.loadResources({ appId, bridgeId });

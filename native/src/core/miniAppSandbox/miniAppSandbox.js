@@ -43,15 +43,15 @@ export class MiniAppSandbox {
     this.updateTargetPageColorStyle(entryPagePath);
 
     // 4. 创建通信桥 bridge
-    // const pageConfig = this.appConfig.modules[entryPagePath];
+    const pageConfig = this.appConfig.modules[entryPagePath];
     const entryPageBridge = await this.createBridge({
       // pagePath: entryPagePath,
       // query: this.appInfo.query,
       // scene: this.appInfo.scene,
       jscore: this.jscore,
-      // isRoot: true,
+      isRoot: true,
       // appId: this.appInfo.appId,
-      // configInfo: mergePageConfig(this.appConfig.app, pageConfig),
+      configInfo: mergePageConfig(this.appConfig.app, pageConfig),
     });
     this.bridgeList.push(entryPageBridge);
 
